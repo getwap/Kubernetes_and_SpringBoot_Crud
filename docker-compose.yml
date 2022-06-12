@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  sample-app:
+    container_name: sample-app
+    build: .
+    networks:
+      - sample-app-net
+    depends_on:
+      - pgdb
+    ports:
+      - "8082:8080"
+  pgdb:
+    container_name: postgres-db
+    image: postgres
+    restart: always
+    volumes:
+      - /root/sampleAppdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: password
+      POSTGRES_PASSWORD: password@123
+      POSTGRES_DB: book_crud
+    ports:
+      - 5430:5432
+    networks:
+      - sample-app-net
+
+networks:
+  sample-app-net:
+    driver: bridge
+
